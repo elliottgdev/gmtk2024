@@ -8,32 +8,50 @@ var is_in_scale_zone = false
 var target_velocity = Vector3.ZERO
 var double_jump = false
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	#set direction to zero at beginning of frame so we can add or subtract one depending on keys held
 	#to get 8 way movement
 	var direction = Vector3.ZERO
 
 	if Input.is_action_pressed("move_forward"):
 		direction.z -= 1
+		if !$Node3D/Footstepsound.playing and is_on_floor():
+			$Node3D/Footstepsound.pitch_scale = (scale.y * 1.25)
+			$Node3D/Footstepsound.play()
 	if Input.is_action_pressed("move_backward"):
 		direction.z += 1
+		if !$Node3D/Footstepsound.playing and is_on_floor():
+			$Node3D/Footstepsound.pitch_scale = (scale.y * 1.25)
+			$Node3D/Footstepsound.play()
 	if Input.is_action_pressed("move_left"):
 		direction.x -= 1
+		if !$Node3D/Footstepsound.playing and is_on_floor():
+			$Node3D/Footstepsound.pitch_scale = (scale.y * 1.25)
+			$Node3D/Footstepsound.play()
 	if Input.is_action_pressed("move_right"):
 		direction.x += 1
+		if !$Node3D/Footstepsound.playing and is_on_floor():
+			$Node3D/Footstepsound.pitch_scale = (scale.y * 1.25)
+			$Node3D/Footstepsound.play()
 		
 	if Input.is_action_just_pressed("jump"):
 		if is_on_floor():
 			target_velocity.y = jump * basis.get_scale().y
+			$Node3D/Jumpsound.pitch_scale = 1
+			$Node3D/Jumpsound.play()
 		elif double_jump == true:
 			target_velocity.y = jump * basis.get_scale().y
 			double_jump = false
+			$Node3D/Jumpsound.pitch_scale = 2
+			$Node3D/Jumpsound.play()
 	#debug input. only works if debug mode is enabled on player in inspector
 	if debug == true or is_in_scale_zone == true:
 		if Input.is_action_pressed("debug_scale_up"):
-			scale += Vector3(delta, delta, delta)
+			if scale <= Vector3(2,2,2):
+				scale += Vector3(_delta, _delta, _delta)	
 		if Input.is_action_pressed("debug_scale_down"):
-			scale -= Vector3(delta, delta, delta)
+			if scale >= Vector3(0,0,0):
+				scale -= Vector3(_delta, _delta, _delta)
 	
 	#normalize so player doesnt move quicker diagonally
 	if direction != Vector3.ZERO:
@@ -45,7 +63,7 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_on_floor():
 		#gravity
-		target_velocity.y -= gravity * basis.get_scale().y * delta
+		target_velocity.y -= gravity * basis.get_scale().y * _delta
 	else: double_jump = true #set double jump to true if player is on the ground
 	
 	#move
@@ -57,3 +75,12 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 
 func _on_area_3d_area_entered(area: Area3D) -> void:
 	print("oof")
+	gravity = -11
+	speed = 0
+	jump = 0
+	$Node3D/Lavadeath.play()
+	$Node3D/Scream.play()
+	await get_tree().create_timer(1).timeout
+	axis_lock_linear_x = true
+	axis_lock_linear_y = true
+	axis_lock_linear_z = true

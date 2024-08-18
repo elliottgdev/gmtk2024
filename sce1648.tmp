@@ -546,4 +546,3 @@ transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 6, 0, 27)
 
 [node name="Lavasound" type="AudioStreamPlayer3D" parent="SoundPlayer"]
 stream = ExtResource("8_rw64q")
-volume_db = -0.13
