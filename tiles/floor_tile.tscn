@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbryhwn8c7mi7"]
+
+[ext_resource type="PackedScene" uid="uid://bljarmiysya0r" path="res://kenney_mini-dungeon/Models/FBX format/floor-detail.fbx" id="1_lcxot"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4wede"]
+
+[node name="ground" type="StaticBody3D"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+
+[node name="floor-detail" parent="." instance=ExtResource("1_lcxot")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, -0.05, 0)
+shape = SubResource("BoxShape3D_4wede")
