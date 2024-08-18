@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjwqqphkb0ic5"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_ys7lu"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_dejgv"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ok36d"]
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_ys7lu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_dejgv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_ok36d")
+skeleton = NodePath("../CollisionShape3D")

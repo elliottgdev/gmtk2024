@@ -52,6 +52,8 @@ func _physics_process(delta: float) -> void:
 	velocity = target_velocity
 	move_and_slide()
 
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	pass # Replace with function body.
 
-func _on_scale_zone_body_entered(body: Node3D) -> void:
-	print("Entered Zone")
+func _on_area_3d_area_entered(area: Area3D) -> void:
+	print("oof")
